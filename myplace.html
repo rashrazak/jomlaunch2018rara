@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        width: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-FBxQcx_l2nqCmh2zSxW5g_C9V645vug"></script> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  </head>
+  <body>
+      <p id="latlang"></p>
+      <p id="latbox"value = "0"></p>
+      <p id="lngbox" value="0"></p>
+
+      <br><br>
+      <div id="map"></div>
+      <div id="formatted-address" style="text-align:left;"></div>
+      <div id="address-components" style="text-align:left;"></div>
+      <div id="geometry" style="text-align:left;"></div>
+      
+  
+     <script src="index.js"></script>
+    </body>
+  </html>

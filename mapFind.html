@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+ <html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <style type="text/css">
+            html { height: 100% }
+            body { height: 100%; margin: 0; padding: 0 }
+            #map-canvas { height: 75% }
+        </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-FBxQcx_l2nqCmh2zSxW5g_C9V645vug&sensor=true&libraries=places">
+        </script>
+        <script type="text/javascript" >
+        var map;
+
+        function handleSearchResults(results, status) {
+        
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+        
+                for (var i = 0; i < results.length; i++) {
+                    var marker = new google.maps.Marker({
+                        //typo: it must be location not Location
+                        position: results[i].geometry.location,
+                        map: map,
+                        icon: results[i].icon
+                    });
+                }
+            }
+        
+        }
+        
+        function performSearch() {
+        
+            var request = {
+                bounds: map.getBounds(),
+                name: "McDonald's"
+            };
+        
+            var service = new google.maps.places.PlacesService(map);
+            //use only the name of the function as callback-argument
+            service.nearbySearch(request, handleSearchResults);
+        
+        }
+        
+        function initialize(location) {
+            var myLatlng = new google.maps.LatLng(location.coords.latitude,location.coords.longitude);
+        
+            var mapOptions = {
+                center: myLatlng,
+                zoom: 9
+            };
+            //removed the var-keyword(otherwise map is not global accessible)
+            map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: "My place"
+            });
+            //again: use only the name of the function as callback-argument
+            service = new google.maps.event.addListenerOnce(map,'bounds_changed',performSearch);
+        }
+        
+        
+        
+        $(document).ready(function () {
+            navigator.geolocation.getCurrentPosition(initialize);
+        });
+        </script>
+    </head>
+    <body>
+        <div id="map-canvas"/>
+    </body>
+</html>
