@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Show Registered Places</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-FBxQcx_l2nqCmh2zSxW5g_C9V645vug"></script> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+   
+</head>
+<body>
+    <p>PLaces</p>
+   <div id="places"></div>
+   <div id="details"></div>
+  
+   <script>
+       // Initialize Firebase
+var config = {
+ apiKey: "AIzaSyCsT8dtpnQGF9ud-t69HWoued8aEjss338",
+ authDomain: "test2-5698d.firebaseapp.com",
+ databaseURL: "https://test2-5698d.firebaseio.com",
+ projectId: "test2-5698d",
+ storageBucket: "test2-5698d.appspot.com",
+ messagingSenderId: "948114249723"
+};
+firebase.initializeApp(config);
+var places = document.getElementById('places');
+var details = document.getElementById('details');
+
+var refx = firebase.database();
+// refx.ref('/myplace').once('value').then(function({val,key}){
+//     var li = document.createElement('li');
+//     li.id = key; //set li -- id as key
+//     li.innerHTML = setDiv(val());
+//     places.appendChild(li);
+//     //alert(JSON.stringify(snapshot.val()));
+    
+// });
+refx.ref('/myplace').once('value').then(function(snapshot){
+    snapshot.forEach(function(element) {
+        var key = element.key;
+        var val = element.val();
+        var li = document.createElement('li');
+        var li2 = document.createElement('p');
+        li.innerHTML = key;
+        places.appendChild(li);
+       details.innerHTML =JSON.stringify(val[1]['geometry']['location']);
+       
+    });
+   
+    
+});
+function setDiv(val){
+    alert(JSON.stringify(val));
+}
+   </script>
+</body>
+</html>
