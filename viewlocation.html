@@ -16,8 +16,9 @@
     <p>PLaces</p>
    <div id="places"></div>
    <div id="details"></div>
+   <div id="maps"></div>
   
-   <script>
+<script>
        // Initialize Firebase
 var config = {
  apiKey: "AIzaSyCsT8dtpnQGF9ud-t69HWoued8aEjss338",
@@ -32,31 +33,58 @@ var places = document.getElementById('places');
 var details = document.getElementById('details');
 
 var refx = firebase.database();
-// refx.ref('/myplace').once('value').then(function({val,key}){
-//     var li = document.createElement('li');
-//     li.id = key; //set li -- id as key
-//     li.innerHTML = setDiv(val());
-//     places.appendChild(li);
-//     //alert(JSON.stringify(snapshot.val()));
+var lat,lang, min;
+
+if (navigator.geolocation) {
+  navigator.geolocation.watchPosition(function(x){
+    lat = x.coords.latitude;
+    lang= x.coords.longtitude;
+  });
+  } else {
+  alert("Your browser does not support Geolocation.");
+}
+
+function nearestPlaces(key, a, b){
     
-// });
+    var maps = new google.maps.Map(document.getElementById('map'), {
+    zoom: 20,
+    center:origin,
+    disableDefaultUI: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+}
+
 refx.ref('/myplace').once('value').then(function(snapshot){
     snapshot.forEach(function(element) {
+        console.log(element);
         var key = element.key;
         var val = element.val();
         var li = document.createElement('li');
-        var li2 = document.createElement('p');
+        var li2 = document.createElement('li');
         li.innerHTML = key;
+        var x = JSON.stringify(val[0]['geometry']['location']);
+        var xsplit = x.split(',');
+        var a = xsplit[0];
+        var b = xsplit[1];
+        a = a.match(/-?\d+\.?\d*/);
+        b = b.match(/-?\d+\.?\d*/);
+        li2.innerHTML =x;
         places.appendChild(li);
-       details.innerHTML =JSON.stringify(val[1]['geometry']['location']);
+        details.appendChild(li2);
+        
+        nearestPlaces(key, a, b);
        
+        setMaps(key, a, b);
     });
    
     
 });
-function setDiv(val){
-    alert(JSON.stringify(val));
+
+function setMaps(key, a, b){
+
 }
-   </script>
+
+</script>
 </body>
 </html>
